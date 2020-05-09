@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+	<meta charset="UTF-8">
+	<title>Tout est dans le nom du fichier!!!</title>
+<style>
+	/**
+		MON RESET
+	**/
+html {font-family: sans-serif; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; } body {margin: 0; } article, aside, details, figcaption, figure, footer, header, hgroup, main, menu, nav, section, summary {display: block; } audio, canvas, progress, video {display: inline-block; vertical-align: baseline; } audio:not([controls]) {display: none; height: 0; } [hidden], template {display: none; } a {background-color: transparent; cursor: pointer; } a:active, a:hover {outline: 0; } abbr[title] {border-bottom: 1px dotted; } b, strong {font-weight: bold; } dfn {font-style: italic; } h1 {font-size: 2em; margin: 0.67em 0; } mark {background: #ff0; color: #000; } small {font-size: 80%; } sub, sup {font-size: 75%; line-height: 0; position: relative; vertical-align: baseline; } sup {top: -0.5em; } sub {bottom: -0.25em; } img {border: 0; } svg:not(:root) {overflow: hidden; } figure {margin: 1em 40px; } hr {-moz-box-sizing: content-box; box-sizing: content-box; height: 0; } pre {overflow: auto; } code, kbd, pre, samp {font-family: monospace, monospace; font-size: 1em; } Button, input, optgroup, select, textarea {color: inherit; font: inherit; margin: 0; } Button {overflow: visible; } Button, select {text-transform: none; } Button, html input[type="Button"], input[type="reset"], input[type="submit"] {-webkit-appearance: Button; cursor: pointer; } Button[disabled], html input[disabled] {cursor: default; } Button::-moz-focus-inner, input::-moz-focus-inner {border: 0; padding: 0; } input {line-height: normal; } input[type="checkbox"], input[type="radio"] {box-sizing: border-box; padding: 0; } input[type="number"]::-webkit-inner-spin-Button, input[type="number"]::-webkit-outer-spin-Button {height: auto; } input[type="search"] {-webkit-appearance: textfield; -moz-box-sizing: content-box; -webkit-box-sizing: content-box; box-sizing: content-box; } input[type="search"]::-webkit-search-cancel-Button, input[type="search"]::-webkit-search-decoration {-webkit-appearance: none; } fieldset {border: 1px solid #c0c0c0; margin: 0 2px; padding: 0.35em 0.625em 0.75em; } legend {border: 0; padding: 0; } textarea {overflow: auto; } optgroup {font-weight: bold; } table {border-collapse: collapse; border-spacing: 0; } td, th {padding: 0; } article, aside, details, figcaption, figure, footer, header, hgroup, main, menu, nav, section, summary { display: block; } audio, canvas, progress, video { display: inline-block; vertical-align: baseline; } audio:not([controls]) { display: none; height: 0; } [hidden], template { display: none; } a { background-color: transparent; cursor: pointer; } a:active, a:hover { outline: 0; } abbr[title] { border-bottom: 1px dotted; } b, strong { font-weight: bold; } dfn { font-style: italic; } h1 { font-size: 2em; margin: 0.67em 0; } mark { background: #ff0; color: #000; } small { font-size: 80%; } sub, sup { font-size: 75%; line-height: 0; position: relative; vertical-align: baseline; } sup { top: -0.5em; } sub { bottom: -0.25em; } img { border: 0; } svg:not(:root) { overflow: hidden; } figure { margin: 1em 40px; } hr { -webkit-box-sizing: content-box; box-sizing: content-box; height: 0; } pre { overflow: auto; } code, kbd, pre, samp { font-family: monospace, monospace; font-size: 1em; } Button, input, optgroup, select, textarea { color: inherit; font: inherit; margin: 0; } Button { overflow: visible; } Button, select { text-transform: none; } Button, html input[type="Button"], input[type="reset"], input[type="submit"] { -webkit-appearance: Button; cursor: pointer; } Button[disabled], html input[disabled] { cursor: default; } Button::-moz-focus-inner, input::-moz-focus-inner { border: 0; padding: 0; } input { line-height: normal; } input[type="checkbox"], input[type="radio"] { -webkit-box-sizing: border-box; box-sizing: border-box; padding: 0; } input[type="number"]::-webkit-inner-spin-Button, input[type="number"]::-webkit-outer-spin-Button { height: auto; } input[type="search"] { -webkit-appearance: textfield; -webkit-box-sizing: content-box; box-sizing: content-box; } input[type="search"]::-webkit-search-cancel-Button, input[type="search"]::-webkit-search-decoration { -webkit-appearance: none; } fieldset { border: 1px solid #c0c0c0; margin: 0 2px; padding: 0.35em 0.625em 0.75em; } legend { border: 0; padding: 0; } textarea { overflow: auto; } optgroup { font-weight: bold; } table { border-collapse: collapse; border-spacing: 0; } td, th { padding: 0; }
+</style>
+</head>
+<body>
+	<div style="padding:1rem;">
+		<input type="file" onchange="onFileSelected(event)">
+	</div>
+	
+	<img>
+	<svg xmlns="http://www.w3.org/2000/svg" style="position: absolute; top:0; left:0; pointer-events: none; z-index:1;"></svg>
+<script>
+	const svg = document.querySelector("svg")
+	const img = document.querySelector("img")
+	let arrPoints = []
+	let polygon = ``
+	
+	const onFileSelected = (evt_select) => {
+		let selected_file = evt_select.target.files[0]
+		let reader = new FileReader()
+
+		let imgtag = document.querySelector("img")
+		imgtag.title = selected_file.name
+
+		reader.onload = function(evt_onload) {
+			imgtag.src = evt_onload.target.result
+			imgtag.onload = () => {
+				_start_svg_composer(imgtag.width, imgtag.height)
+			}
+			document.querySelector("div").remove()
+			_start_svg_composer()
+		}
+
+		reader.readAsDataURL(selected_file);
+	}
+	
+	const _start_svg_composer = (width, height) => {
+		svg.style.width = width + `px`
+		svg.style.height = height + `px`
+		svg.setAttribute(
+			'viewBox',
+			`0 0 ${width} ${height}`
+		)
+		img.addEventListener('click',_add_point_2_svg)
+		img.style.cursor = "crosshair" // POUR LE STYLE :D
+	}
+	
+	const _add_point_2_svg = (e) => {
+		arrPoints.push({
+			x: e.clientX,
+			y: e.clientY
+		})
+		__redraw_svg()
+	}
+
+	const __redraw_svg = () => {
+		polygon = `<polygon fill="rgba(0,0,0,.25)" points="`
+		arrPoints.forEach(point=>{
+			polygon += ` ${point.x},${point.y}`
+		})
+		polygon += `" />`
+		svg.innerHTML = polygon
+	}
+</script>
+</body>
+</html>
