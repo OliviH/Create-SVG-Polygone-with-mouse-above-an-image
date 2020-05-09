@@ -18,7 +18,7 @@ html {font-family: sans-serif; -ms-text-size-adjust: 100%; -webkit-text-size-adj
 	<img>
 	<svg xmlns="http://www.w3.org/2000/svg" style="position: absolute; top:0; left:0; pointer-events: none; z-index:1;"></svg>
 <script>
-	const svg = document.querySelector("svg")
+	let svg = document.querySelector("svg")
 	const img = document.querySelector("img")
 	let arrPoints = []
 	let polygon = ``
@@ -33,6 +33,7 @@ html {font-family: sans-serif; -ms-text-size-adjust: 100%; -webkit-text-size-adj
 		reader.onload = function(evt_onload) {
 			imgtag.src = evt_onload.target.result
 			imgtag.onload = () => {
+				console.log(imgtag)
 				_start_svg_composer(imgtag.width, imgtag.height)
 			}
 			document.querySelector("div").remove()
@@ -45,10 +46,7 @@ html {font-family: sans-serif; -ms-text-size-adjust: 100%; -webkit-text-size-adj
 	const _start_svg_composer = (width, height) => {
 		svg.style.width = width + `px`
 		svg.style.height = height + `px`
-		svg.setAttribute(
-			'viewBox',
-			`0 0 ${width} ${height}`
-		)
+		svg.viewBox = `0 0 ${width} ${height}`
 		img.addEventListener('click',_add_point_2_svg)
 		img.style.cursor = "crosshair" // POUR LE STYLE :D
 	}
